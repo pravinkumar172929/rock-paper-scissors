@@ -16,6 +16,7 @@ function App() {
   const [computerSelection, setComputerSelection] = useState("");
   const [playerScore, setPlayerScore] = useState(0);
   const [computerScore, setComputerScore] = useState(0);
+  const [resultMessage, setResultMessage] = useState("");
 
   console.log(computerScore);
 
@@ -26,8 +27,14 @@ function App() {
     // alert(outcome);
     if (outcome) {
       setPlayerScore((prevScore) => prevScore + 1);
+      setResultMessage(
+        `Player won! ${playerSelection} beats ${computerSelection}`
+      );
     } else {
       setComputerScore((prevScore) => prevScore + 1);
+      setResultMessage(
+        `Computer won! ${computerSelection} beats ${playerSelection}`
+      );
     }
   };
 
@@ -91,7 +98,7 @@ function App() {
         </section>
 
         <div className="results-container">
-          <p id="results-msg"></p>
+          <p id="results-msg">{resultMessage}</p>
           <p id="winner-msg"></p>
           <button className="btn" id="reset-game-btn">
             Play again?
