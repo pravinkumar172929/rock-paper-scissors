@@ -14,12 +14,21 @@ const hasPlayerWon = (player: string, computer: string) => {
 function App() {
   const [playerSelection, setPlayerSelection] = useState("");
   const [computerSelection, setComputerSelection] = useState("");
+  const [playerScore, setPlayerScore] = useState(0);
+  const [computerScore, setComputerScore] = useState(0);
+
+  console.log(computerScore);
 
   const checkResult = (userSelection: string) => {
     setPlayerSelection(userSelection);
     setComputerSelection(options[Math.floor(Math.random() * options.length)]);
     const outcome = hasPlayerWon(playerSelection, computerSelection);
-    alert(outcome);
+    // alert(outcome);
+    if (outcome) {
+      setPlayerScore((prevScore) => prevScore + 1);
+    } else {
+      setComputerScore((prevScore) => prevScore + 1);
+    }
   };
 
   console.log("playerSelection", playerSelection);
@@ -50,15 +59,15 @@ function App() {
 
         <div className="score-container">
           <strong>
-            Player Score:{" "}
+            Player Score:
             <span className="score" id="player-score">
-              0
+              {playerScore}
             </span>
           </strong>
           <strong>
             Computer Score:
             <span className="score" id="computer-score">
-              0
+              {computerScore}
             </span>
           </strong>
         </div>
@@ -78,15 +87,6 @@ function App() {
                 {option}
               </button>
             ))}
-            {/* <button id="rock-btn" className="btn">
-              Rock
-            </button>
-            <button id="paper-btn" className="btn">
-              Paper
-            </button>
-            <button id="scissors-btn" className="btn">
-              Scissors
-            </button> */}
           </div>
         </section>
 
