@@ -1,6 +1,30 @@
+import { useState } from "react";
 import "./App.css";
 
+const options = ["Rock", "Paper", "Scissors"];
+
+const hasPlayerWon = (player: string, computer: string) => {
+  return (
+    (player === "Rock" && computer === "Scissors") ||
+    (player === "Paper" && computer === "Rock") ||
+    (player === "Scissors" && computer === "Paper")
+  );
+};
+
 function App() {
+  const [playerSelection, setPlayerSelection] = useState("");
+  const [computerSelection, setComputerSelection] = useState("");
+
+  const checkResult = (userSelection: string) => {
+    setPlayerSelection(userSelection);
+    setComputerSelection(options[Math.floor(Math.random() * options.length)]);
+    const outcome = hasPlayerWon(playerSelection, computerSelection);
+    alert(outcome);
+  };
+
+  console.log("playerSelection", playerSelection);
+  console.log("computerSelection", computerSelection);
+
   return (
     <>
       <h1>Let's play Rock, Paper, Scissors!</h1>
@@ -42,7 +66,19 @@ function App() {
         <section className="options-container">
           <h2>Choose an option:</h2>
           <div className="btn-container">
-            <button id="rock-btn" className="btn">
+            {options.map((option) => (
+              <button
+                id="rock-btn"
+                className="btn"
+                key={option}
+                onClick={() => {
+                  checkResult(option);
+                }}
+              >
+                {option}
+              </button>
+            ))}
+            {/* <button id="rock-btn" className="btn">
               Rock
             </button>
             <button id="paper-btn" className="btn">
@@ -50,7 +86,7 @@ function App() {
             </button>
             <button id="scissors-btn" className="btn">
               Scissors
-            </button>
+            </button> */}
           </div>
         </section>
 
