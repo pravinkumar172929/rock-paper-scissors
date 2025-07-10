@@ -120,9 +120,9 @@ function App() {
             <div className="btn-container">
               {options.map((option) => (
                 <button
-                  id="rock-btn"
-                  className="btn"
                   key={option}
+                  id={`${option}-btn`}
+                  className="btn"
                   onClick={() => {
                     checkResult(option);
                   }}
