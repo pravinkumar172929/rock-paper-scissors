@@ -41,9 +41,9 @@ function App() {
       return;
     }
 
-    const outcome = hasPlayerWon(playerSelection, computerChoice);
+    const playerWon = hasPlayerWon(playerSelection, computerChoice);
 
-    if (outcome) {
+    if (playerWon) {
       const newPlayerScore = playerScore + 1;
       setPlayerScore(newPlayerScore);
       setResultMessage(
