@@ -11,69 +11,48 @@ const hasPlayerWon = (player: string, computer: string) => {
   );
 };
 
-const getRandomComputerResult = () => {
-  const randomIndex = Math.floor(Math.random() * options.length);
-  return options[randomIndex];
-};
-
 function App() {
-  const [playerSelection, setPlayerSelection] = useState("");
-  const [computerSelection, setComputerSelection] = useState("");
   const [playerScore, setPlayerScore] = useState(0);
   const [computerScore, setComputerScore] = useState(0);
-  const [resultMessage, setResultMessage] = useState("");
-  const [winnerMessage, setWinnerMessage] = useState("");
-  const [gameOver, setGameOver] = useState(false);
+  const [lastResult, setLastResult] = useState<String>("");
 
-  console.log(computerScore);
+  const gameOver = playerScore === 3 || computerScore === 3;
+  const winnerMessage =
+    playerScore === 3
+      ? "Player wins hte game!"
+      : computerScore === 3
+      ? "Computer wins the game"
+      : "";
 
   const checkResult = (userSelection: string) => {
     if (gameOver) {
       return;
     }
 
-    setPlayerSelection(userSelection);
-    const computerChoice = getRandomComputerResult();
-    setComputerSelection(computerChoice);
+    const computerSelection =
+      options[Math.floor(Math.random() * options.length)];
 
-    if (userSelection === computerChoice) {
-      setResultMessage(`It's a tie! Both chose ${userSelection}`);
-      return;
+    if (userSelection === computerSelection) {
+      setLastResult(`It is a tie. Both chose${userSelection}`);
     }
 
-    const outcome = hasPlayerWon(playerSelection, computerChoice);
+    const playerWon = hasPlayerWon(userSelection, computerSelection);
 
-    if (outcome) {
-      const newPlayerScore = playerScore + 1;
-      setPlayerScore(newPlayerScore);
-      setResultMessage(
-        `Player won! ${playerSelection} beats ${computerSelection}`
-      );
-      if (newPlayerScore === 3) {
-        setGameOver(true);
-        setWinnerMessage("Player wins hte game!");
-      }
+    if (playerWon) {
+      setPlayerScore((preScore) => preScore + 1);
+      setLastResult(`Player wins! ${userSelection} beats ${computerSelection}`);
     } else {
-      const newComputerScore = computerScore + 1;
-      setComputerScore(newComputerScore);
-      setResultMessage(
-        `Computer won! ${computerSelection} beats ${playerSelection}`
+      setComputerScore((preScore) => preScore + 1);
+      setLastResult(
+        `Computer wins! ${computerSelection} beats ${userSelection}`
       );
-      if (newComputerScore === 3) {
-        setGameOver(true);
-        setWinnerMessage("Computer wins the game");
-      }
     }
   };
 
   const resetGame = () => {
     setPlayerScore(0);
     setComputerScore(0);
-    setPlayerSelection("");
-    setComputerSelection("");
-    setResultMessage("");
-    setWinnerMessage("");
-    setGameOver(false);
+    setLastResult("");
   };
 
   return (
@@ -120,9 +99,9 @@ function App() {
             <div className="btn-container">
               {options.map((option) => (
                 <button
-                  id="rock-btn"
-                  className="btn"
                   key={option}
+                  id={`${option}-btn`}
+                  className="btn"
                   onClick={() => {
                     checkResult(option);
                   }}
@@ -136,7 +115,7 @@ function App() {
 
         {gameOver && (
           <div className="results-container">
-            <p id="results-msg">{resultMessage}</p>
+            <p id="results-msg">{lastResult}</p>
             <p id="winner-msg">{winnerMessage}</p>
             <button
               className="btn"
@@ -148,6 +127,10 @@ function App() {
               Play again?
             </button>
           </div>
+        )}
+
+        {!gameOver && lastResult && (
+          <p className="round-result">{lastResult}</p>
         )}
       </main>
     </>
